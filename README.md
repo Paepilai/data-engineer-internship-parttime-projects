@@ -1,7 +1,7 @@
-# Hi, I'm I-oon! 👋
-**Data Pipeline Architect | Full-Time IT Student | Walker | Deep Talker | Growth Mindset Junkie**
+# Hi, I'm Paepilai! 👋
+**Part-Time Data Engineer | Full-Time Learner | Pro-Walker | Deep Talk Seeker**
 
-Welcome to my GitHub! I am a Data Engineer passionate about transforming manual, time-consuming workflows into high-performance, automated data systems. Currently balancing my IT degree at KMUTT with my role as a Part-Time Data Engineer, I specialize in building scalable ETL/ELT pipelines, architecting data quality frameworks, and creating dynamic business dashboards.
+I am a Data Engineer passionate about transforming manual, time-consuming workflows into high-performance, automated data systems. Currently balancing my IT degree at KMUTT with my role as a Part-Time Data Engineer, I specialize in building scalable ETL/ELT pipelines, architecting data quality frameworks, and creating dynamic business dashboards.
 
 > 🔒 **PDPA & Confidentiality Notice:**
 > *To comply with Thailand's Personal Data Protection Act (PDPA) and strict enterprise confidentiality agreements, the source code, specific business logic, and datasets for the enterprise projects listed below cannot be shared publicly. The descriptions serve to demonstrate the system architecture, tools utilized, and the engineering challenges solved.*
@@ -12,46 +12,69 @@ Welcome to my GitHub! I am a Data Engineer passionate about transforming manual,
 
 ### 1. Enterprise POS Automated Reporting & Distribution System
 **Overview**
-This project focuses on the automation of high-volume data reporting and secure distribution. [cite_start]My role centered on transforming pre-curated data using advanced SQL and building the programmatic delivery pipeline to replace manual export workflows[cite: 56, 57].
+This project demonstrates the automation of complex data reporting and distribution for enterprise Point of Sale (POS) systems. It replaces manual Excel reporting with a fully orchestrated, programmatic workflow.
 
 **Project Components**
-* [cite_start]**Advanced Data Processing**: Authored complex SQL queries to perform multi-level data joins and logic transformations on curated datasets[cite: 56, 57].
-* [cite_start]**Dynamic Data Formatting**: Developed Python logic to map SQL results into standardized, multi-sheet Excel templates[cite: 57].
-* [cite_start]**SharePoint API Distribution**: Engineered an automated delivery pipeline using SharePoint APIs to place sensitive reports directly into secured enterprise folders[cite: 56].
+* **Data Processing:** Complex SQL queries to extract and transform pre-curated POS data.
+* **Data Formatting:** Dynamic formatting of data into standardized Excel templates.
+* **Data Distribution:** Automated delivery pipelines via SharePoint and Email APIs.
 
 **Tools & Technologies**
-* [cite_start]**Python & SQL**: Utilized for heavy logic transformation and template generation[cite: 364, 366, 367].
-* [cite_start]**Apache Airflow**: Orchestrates the automated scheduling of the reporting lifecycle[cite: 347].
-* [cite_start]**SharePoint API**: Facilitates secure, server-to-server file transfers[cite: 342, 561].
+* **Python & SQL:** Core logic for heavy data transformation, query execution, and template formatting.
+* **Apache Airflow:** Orchestrates the scheduling and execution of the reporting jobs.
+* **SharePoint API:** Automates file placement into specific enterprise directories.
 
 **Key Features**
-* [cite_start]**Complex Logic Implementation**: Translated intricate business requirements into high-performance SQL scripts[cite: 56].
-* [cite_start]**Zero-Manual Distribution**: Leveraged APIs to ensure reports are delivered instantly upon pipeline completion, ensuring data freshness[cite: 56].
+* **Advanced Data Extraction:** Utilized complex SQL logic to pull exact reporting metrics from vast curated datasets.
+* **Automated Report Delivery:** Formatted Excel templates dynamically and delivered them directly to stakeholders via email and SharePoint APIs, completely eliminating manual export tasks.
+
+**Learnings & Skills**
+* **API Integration:** Learned to seamlessly integrate data pipelines with enterprise file-sharing systems (SharePoint).
+* **Business Logic Implementation:** Translated complex POS reporting requirements into automated SQL/Python scripts.
 
 ---
 
 ### 2. Secure Enterprise Pipeline & On-Premise Synchronization
 **Overview**
-[cite_start]Developed a secure ETL pipeline designed to route sensitive data across multiple environments while enforcing strict PII encryption for on-premise storage[cite: 53, 54].
+Designed to handle highly sensitive data, this project involves building a secure ETL pipeline that routes data across DEV, QA, and Production environments while enforcing strict PII (Personally Identifiable Information) encryption on on-premise databases.
 
 **Project Components**
-* [cite_start]**Data Ingestion**: Configured Airbyte connections for cross-system synchronization[cite: 267].
-* [cite_start]**PII Security Layer**: Implemented SHA-256 hashing and encryption protocols within the ingestion layer[cite: 19, 268].
-* [cite_start]**On-Premise Deployment**: Successfully synchronized and secured data within local infrastructure for compliance[cite: 54, 268].
+* **Data Ingestion:** Airbyte Connections.
+* **Data Security:** SHA-256 Hashing and Encryption layer.
+* **Data Storage:** On-Premise Database.
 
 **Tools & Technologies**
-* [cite_start]**Airbyte**: Managed automated data synchronization[cite: 348].
-* [cite_start]**GitLab & Jenkins**: Used for rigorous code reviews and CI/CD deployment[cite: 162, 349, 362].
+* **Airbyte:** Open-source data integration tool for ELT processes.
+* **SQL:** For defining schema structures and executing data merges/inserts.
+* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to Production.
+
+**Key Features**
+* **PII Protection:** Implemented robust hashing and encryption logic for sensitive data before it reaches the on-premise storage.
+* **Multi-Environment Deployment:** Managed data flow across Development, QA, and Production environments securely.
+
+**Learnings & Skills**
+* **Data Privacy Compliance:** Mastered the handling of sensitive PII data within strict enterprise environments.
+* **CI/CD Workflows:** Gained hands-on experience deploying complex DAGs and SQL scripts using Jenkins.
 
 ---
 
-### 3. Serverless Alerting & Notification Framework
+### 3. Serverless Alerting System for Data Pipelines
 **Overview**
-[cite_start]Overhauled the pipeline monitoring system by integrating low-code automation with real-time webhooks to provide granular task updates[cite: 556, 557].
+This project overhauls the standard Apache Airflow alerting mechanism. By integrating Power Automate and MS Teams Webhooks, it provides real-time, detailed pipeline status alerts without relying on premium API connectors.
+
+**Project Components**
+* **Trigger Event:** Airflow Task Success/Failure.
+* **Workflow Automation:** Power Automate HTTP Webhooks.
+* **Notification System:** MS Teams Adaptive Cards.
+
+**Tools & Technologies**
+* **Apache Airflow:** Workflow orchestrator.
+* **Power Automate:** Microsoft's low-code workflow automation platform.
+* **MS Teams Webhooks:** For real-time messaging integration.
 
 **Key Features**
-* [cite_start]**Webhook-Based Alerting**: Developed Power Automate workflows triggered by Airflow HTTP requests[cite: 338, 559].
-* [cite_start]**Logical Validation Alerts**: Engineered notifications that trigger when tasks succeed technically but fail internal business logic or data quality checks[cite: 563].
+* **Cost-Efficient Architecture:** Bypassed premium connectors by configuring HTTP URL triggers in Power Automate.
+* **Granular Alerting:** Configured alerts to trigger not just on system failures, but also when a task succeeds technically but fails internal business logic validations.
 
 ---
 
@@ -59,48 +82,75 @@ This project focuses on the automation of high-volume data reporting and secure 
 
 ### 4. Enterprise PII Data Security & Hashing Framework
 **Overview**
-[cite_start]Built a critical security layer to protect sensitive customer information across various retail domains[cite: 19, 520].
+A critical security infrastructure project aimed at fortifying data privacy compliance across multiple enterprise domains (Customer Profiles, Visitor Logs, Digital Gift Cards). The solution involved developing advanced cryptographic logic to protect sensitive customer data.
+
+**Project Components**
+* **Cryptographic Layer:** AES Encryption and SHA-256 Hashing.
+* **Query Optimization:** Common Table Expressions (CTEs).
+* **Data Integration:** Merge SQL Files.
+
+**Tools & Technologies**
+* **Python (PyCryptodome):** Utilized for robust encryption and hashing algorithms.
+* **PostgreSQL (Cloud DWS):** Relational database management.
 
 **Key Features**
-* [cite_start]**Cryptographic Implementation**: Applied AES encryption and SHA-256 hashing to secure emails and mobile numbers[cite: 270, 522].
-* [cite_start]**Performance Refactoring**: Optimized query performance by moving decryption logic into Common Table Expressions (CTEs), reducing compute overhead on the database[cite: 524, 303].
+* **Irreversible Hashing:** Added dedicated hash columns for emails and phone numbers to allow data analysis without exposing raw PII.
+* **Optimized Decryption:** Refactored legacy encryption logic by moving decryption processes into SQL CTEs, drastically reducing redundant calculations and query execution time.
 
 ---
 
 ### 5. Automated Data Quality & Validation Framework
 **Overview**
-[cite_start]Architected an end-to-end framework for a digital voucher system to verify data integrity across six core dimensions[cite: 418, 422].
+Architected a comprehensive data quality framework from scratch to ensure the integrity of a major digital voucher data warehouse. This project involved defining data models, writing rigorous validation rules, and automating the checks.
+
+**Project Components**
+* **Data Modeling:** Schema and Primary Key definition.
+* **Quality Rules:** SQL scripts testing 6 dimensions of data quality.
+* **Orchestration:** Airflow Validation and Notification DAGs.
+
+**Tools & Technologies**
+* **Apache Airflow:** For scheduling and dependency management.
+* **SQL:** For executing validation logic.
 
 **Key Features**
-* [cite_start]**Automated Quality Rules**: Developed SQL-based rules to check for Completeness, Consistency, Validity, Uniqueness, Accuracy, and Freshness[cite: 422].
-* [cite_start]**SDLC-Compliant Testing**: Documented and executed comprehensive Unit Testing protocols and test cases to ensure production stability[cite: 472, 483].
+* **Six-Dimensional Checking:** Automated checks for Completeness, Consistency, Validity, Uniqueness, Accuracy, and Freshness.
+* **SDLC Standardized Testing:** Developed comprehensive Unit Testing documentation and test cases aligning with standard Software Development Life Cycles.
 
 ---
 
-### 6. Retail Analytics & Engagement Dashboard
+### 6. Global Retail Visitor Analytics Dashboard
 **Overview**
-[cite_start]Developed an interactive BI solution to analyze visitor behavior and marketing campaign effectiveness[cite: 489, 539].
+Developed a comprehensive Business Intelligence solution to track user engagement and campaign performance. The dashboard integrates data from physical registration kiosks and digital voucher systems to provide actionable insights for Business Analysts.
+
+**Project Components**
+* **Data Sources:** Visitor Registrations and Digital Voucher Databases.
+* **Data Processing:** Dynamic SQL and Jinja Templating.
+* **Visualization:** Interactive BI Dashboards.
+
+**Tools & Technologies**
+* **Apache Superset:** Open-source data exploration and visualization platform.
+* **Miro:** Used for UI/UX dashboard wireframing and flow mapping.
 
 **Key Features**
-* [cite_start]**Advanced Visualizations**: Created Sunburst and Funnel charts to track user acquisition and conversion steps[cite: 495, 507].
-* [cite_start]**Jinja-Powered SQL**: Utilized Jinja templating within SQL to enable high-performance, dynamic filtering on the dashboard[cite: 62, 292].
+* **Advanced Visualizations:** Implemented Sunburst charts for acquisition channels, Funnel charts for user journeys, and Word Clouds for demographics.
+* **Dynamic Querying:** Utilized Jinja templates within SQL to create highly flexible and interactive dashboard filters.
 
 ---
 
-### 7. Pipeline Infrastructure Refactoring
+### 7. Enterprise Tenant Management Pipeline Refactoring
 **Overview**
-[cite_start]Modernized legacy tenant management pipelines to improve reliability and reduce system load[cite: 63, 402].
+Modernized legacy data pipelines for a retail tenant management system to align with new engineering standards. Addressed missing DAG issues by optimizing variables and resolving critical system timeouts.
 
 **Key Features**
-* [cite_start]**Dynamic Task Mapping**: Implemented Airflow's Dynamic Task Mapping to simplify complex DAG structures[cite: 18, 404].
-* [cite_start]**Efficiency Gains**: Resolved critical DAG timeouts and minimized redundant table discovery through optimized orchestration logic[cite: 17, 18, 406].
+* **Pipeline Optimization:** Refactored Airflow DAGs to utilize Dynamic Task Mapping, reducing pipeline complexity.
+* **Performance Enhancements:** Prevented system timeouts and reduced Airflow overload by limiting redundant SQL executions and implementing best practices.
 
 ---
 
-### 8. Historical Data Ingestion & Transformation
+### 8. Enterprise Mobile App Historical Data Processing
 **Overview**
-[cite_start]Engineered the recovery and ingestion of high-volume historical mobile application data into the enterprise data warehouse[cite: 61, 442].
+Engineered the ingestion of massive historical application data. Utilized Python and pandas to clean, transform, and map messy CSV files into the Production Data Warehouse.
 
 **Key Features**
-* [cite_start]**Data Sanitization**: Used Python and Pandas to fix broken JSON strings, handle null values, and extract regex patterns from inconsistent source files[cite: 446, 225].
-* [cite_start]**Production Deployment**: Mapped and loaded cleaned data into the production environment for historical analysis by the Data Science team[cite: 450, 456].
+* **Data Transformation:** Handled nulls, extracted regex patterns, formatted timestamps, and fixed broken JSON strings via custom Python scripts.
+* **Seamless Ingestion:** Successfully mapped and imported the cleaned data into the DWS Production environment, enabling historical trend analysis for the Data Science team.
