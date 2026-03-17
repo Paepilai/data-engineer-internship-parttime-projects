@@ -1,9 +1,7 @@
-# Data-Engineer-Internship-PartTime
-
 # Hi, I'm Paepilai! 👋
-**Part-Time Data Engineer | Full-Time Learner | Pro-Walker | Deep Talk Seeker**
+**Data Pipeline Architect | Full-Time IT Student | Walker | Deep Talker | Growth Mindset Junkie**
 
-I am a Data Engineer passionate about transforming manual, time-consuming workflows into high-performance, automated data systems. Currently balancing my IT degree at KMUTT with my role as a Part-Time Data Engineer, I specialize in building scalable ETL/ELT pipelines, architecting data quality frameworks, and creating dynamic business dashboards.
+Welcome to my GitHub! I am a Data Engineer passionate about transforming manual, time-consuming workflows into high-performance, automated data systems. Currently balancing my IT degree at KMUTT with my role as a Part-Time Data Engineer, I specialize in building scalable ETL/ELT pipelines, architecting data quality frameworks, and creating dynamic business dashboards.
 
 > 🔒 **PDPA & Confidentiality Notice:** > *To comply with Thailand's Personal Data Protection Act (PDPA) and strict enterprise confidentiality agreements, the source code, specific business logic, and datasets for the enterprise projects listed below cannot be shared publicly. The descriptions serve to demonstrate the system architecture, tools utilized, and the engineering challenges solved.*
 
@@ -37,7 +35,7 @@ This project demonstrates the automation of complex data reporting and distribut
 
 ### 2. Secure Enterprise Pipeline & On-Premise Synchronization
 **Overview**
-[cite_start]Designed to handle highly sensitive data, this project involves building a secure ETL pipeline that routes data across DEV, QA, and Production environments while enforcing strict PII encryption on on-premise databases[cite: 53, 54, 55].
+[cite_start]Designed to handle highly sensitive data, this project involves building a secure ETL pipeline that routes data across DEV, QA, and Production environments while enforcing strict PII (Personally Identifiable Information) encryption on on-premise databases[cite: 53, 54, 55].
 
 **Project Components**
 * [cite_start]**Data Ingestion:** Airbyte Connections[cite: 53].
@@ -46,7 +44,7 @@ This project demonstrates the automation of complex data reporting and distribut
 
 **Tools & Technologies**
 * [cite_start]**Airbyte:** Open-source data integration tool for ELT processes[cite: 73, 74].
-* [cite_start]**SQL:** For defining schema structures and executing data merges/inserts/upserts[cite: 54].
+* [cite_start]**SQL:** For defining schema structures and executing data merges/inserts[cite: 54].
 * [cite_start]**GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to Production[cite: 162, 163, 362].
 
 **Key Features**
