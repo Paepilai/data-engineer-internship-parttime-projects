@@ -45,7 +45,7 @@ Designed to handle highly sensitive data, this project involves building a secur
 
 **Tools & Technologies**
 * **Airbyte:** Open-source data integration tool for ELT processes.
-* **SQL:** For defining schema structures and executing data merges/inserts.
+* **SQL:** For defining schema structures and executing data merges/inserts/upserts.
 * **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to Production.
 
 **Key Features**
