@@ -31,6 +31,66 @@ This project demonstrates the automation of complex data reporting and distribut
 **Learnings & Skills**
 * **API Integration:** Learned to seamlessly integrate data pipelines with enterprise file-sharing systems (SharePoint).
 * **Business Logic Implementation:** Translated complex POS reporting requirements into automated SQL/Python scripts.
+  
+/* Enterprise Data Security: PII Encryption & Hashing Framework
+  ------------------------------------------------------------------
+  This snippet demonstrates secure in-database data transformation. 
+  It handles the decryption of legacy data and re-encrypts it using 
+  AES-256 (CBC mode) and SHA-256. Cryptographic keys are securely 
+  injected at runtime via Airflow template parameters to ensure 
+  Zero-Trust architecture (keys are never hardcoded).
+*/
+
+WITH Secure_PII_Transformation AS (
+    SELECT
+        user_uuid,
+        created_timestamp,
+        created_by_system,
+        identity_type,
+
+        -- 1. Re-Encryption: Decrypt legacy bytea, then re-encrypt with AES-256
+        CASE 
+            WHEN government_id = '\x' THEN NULL 
+            ELSE 
+                enterprise_encrypt(
+                    legacy_sym_decrypt(government_id::bytea, '{{ params.legacy_decryption_key }}'),
+                    '{{ params.master_encryption_key }}', 
+                    'aes256', 
+                    'cbc', 
+                    'sha256'
+                ) 
+        END AS encrypted_gov_id,
+
+        CASE 
+            WHEN primary_phone = '\x' THEN NULL 
+            ELSE 
+                enterprise_encrypt(
+                    legacy_sym_decrypt(primary_phone::bytea, '{{ params.legacy_decryption_key }}'),
+                    '{{ params.master_encryption_key }}', 
+                    'aes256', 
+                    'cbc', 
+                    'sha256'
+                ) 
+        END AS encrypted_phone,
+
+        -- 2. Standard Enterprise Encryption Wrapper using Airflow Variables
+        enterprise_sec.standard_encrypt(
+            identity_number, 
+            '{{ var.value.enterprise_standard_encryption_key }}'
+        ) AS secured_identity_number
+
+    FROM raw_landing.user_profiles
+    WHERE user_status = 'ACTIVE'
+)
+
+SELECT 
+    user_uuid,
+    identity_type,
+    encrypted_gov_id,
+    encrypted_phone,
+    secured_identity_number,
+    created_timestamp
+FROM Secure_PII_Transformation;
 
 ---
 
