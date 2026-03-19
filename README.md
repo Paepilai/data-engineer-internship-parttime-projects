@@ -263,6 +263,80 @@ This project overhauls the standard Apache Airflow alerting mechanism. By integr
 * **Cost-Efficient Architecture:** Bypassed premium connectors by configuring HTTP URL triggers in Power Automate.
 * **Granular Alerting:** Configured alerts to trigger not just on system failures, but also when a task succeeds technically but fails internal business logic validations.
 
+**💻 Code Snippet: Custom Business Logic Notifier (Python/Airflow)**
+```python
+/* Custom Airflow Notifier: Business Logic Alerting
+  ------------------------------------------------------------------
+  This Python class extends Airflow's BaseNotifier to send Adaptive Cards 
+  to Microsoft Teams. 
+  
+  The true value is in the `notify` method: instead of relying on standard 
+  system crashes, it pulls XCom data to detect "Silent Failures" — where 
+  the SQL executed successfully, but the resulting data failed validation rules.
+*/
+
+import logging
+import requests
+from airflow.models import Variable
+from airflow.notifications.basenotifier import BaseNotifier
+from airflow.utils.context import Context
+
+logger = logging.getLogger(__name__)
+
+class EnterpriseTeamsNotifier(BaseNotifier):
+    """
+    Custom Airflow Notifier designed to catch Data Quality failures 
+    and push real-time alerts to Microsoft Teams.
+    """
+
+    def __init__(self, data_area: str, consumer_team: str):
+        super().__init__()
+        self.data_area = data_area
+        self.consumer_team = consumer_team
+
+    def notify(self, context: Context) -> None:
+        """
+        Evaluate XCom results to determine if a technically successful 
+        task actually failed its data validation checks.
+        """
+        ti = context["task_instance"]
+
+        # 1. Skip standard system failures (handled by default operators)
+        if ti.state != "success":
+            return
+        
+        try:
+            # 2. Extract the business validation payload from Airflow XCom
+            task_result = ti.xcom_pull(task_ids=ti.task_id)
+            
+            # 3. Trigger alert ONLY if business logic validation explicitly failed
+            if isinstance(task_result, dict) and task_result.get("status") == "failed":
+                logger.info("System execution passed, but Data Validation FAILED. Sending alert.")
+                
+                payload = self._create_adaptive_card(context)
+                self._send_webhook(payload)
+                
+            else:
+                logger.info("Task and Data Validations succeeded. No alert required.")
+                
+        except Exception as e:
+            logger.error(f"Error evaluating validation result for MS Teams alert: {str(e)}")
+            raise
+
+    def _send_webhook(self, payload: dict) -> None:
+        """Securely post the Adaptive Card to the enterprise Webhook."""
+        webhook_url = Variable.get("enterprise_msteams_webhook_url")
+        
+        try:
+            response = requests.post(webhook_url, json=payload, timeout=10)
+            response.raise_for_status()
+            logger.info(f"Teams notification sent successfully (status code: {response.status_code})")
+            
+        except requests.exceptions.RequestException as e:
+            logger.error(f"Failed to send Teams notification: {e}")
+            raise
+```
+
 ---
 
 ## 🌟 Data Engineer Intern Projects
