@@ -1,10 +1,11 @@
 # Hi, I'm Paepilai! 👋
 **Part-Time Data Engineer | Full-Time Learner | Pro-Walker | Deep Talk Seeker**
 
-I am a Data Engineer passionate about transforming manual, time-consuming workflows into high-performance, automated data systems. Currently balancing my IT degree at KMUTT with my role as a Part-Time Data Engineer, I specialize in building scalable ETL/ELT pipelines, architecting data quality frameworks, and creating dynamic business dashboards.
+I am a Data Engineer passionate about transforming manual, time-consuming workflows into high-performance, automated data systems. Currently balancing my IT degree at KMUTT with my role as a Part-Time Data Engineer, where my day-to-day work revolves around building scalable ETL/ELT pipelines, architecting data quality frameworks, and creating dynamic business dashboards.
 
 > 🔒 **PDPA & Confidentiality Notice:**
 > *To comply with Thailand's Personal Data Protection Act (PDPA) and strict enterprise confidentiality agreements, the source code, specific business logic, and datasets for the enterprise projects listed below cannot be shared publicly. The descriptions serve to demonstrate the system architecture, tools utilized, and the engineering challenges solved.*
+> *⚠️ **Note on Code Snippets:** Any code snippets provided below have been heavily anonymized. They utilize **mock data, abstracted schema names, and dummy variables** (no real enterprise data, names, or proprietary logic are shown). They are included solely to demonstrate my coding style, architectural patterns, and technical proficiency.*
 
 ---
 
@@ -24,8 +25,9 @@ This project demonstrates the automation of complex data reporting and distribut
 **Tools & Technologies**
 * **Python & SQL:** Core logic for heavy data transformation, query execution, and template formatting.
 * **Apache Airflow:** Orchestrates the scheduling and execution of the reporting jobs.
-* **SharePoint API:** Automates file placement into specific enterprise directories.
-
+* **SharePoint API:** Automates file placement into specific directories.
+* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
+* 
 **Key Features**
 * **Advanced Data Extraction:** Utilized complex SQL logic to pull exact reporting metrics from vast curated datasets.
 * **Automated Report Delivery:** Formatted Excel templates dynamically and delivered them directly to stakeholders via email and SharePoint APIs, completely eliminating manual export tasks.
@@ -214,11 +216,9 @@ ORDER BY
   
           compile_op >> upload_op >> cleanup_op
   
-      # --- Define DAG Dependencies ---
       config_data = init_pipeline()
       process_reports(config_data)
   
-  # Instantiate the DAG
   dag_instance = automated_reporting_pipeline()
   ```
 ---
@@ -237,7 +237,7 @@ Designed to handle highly sensitive data, this project involves building a secur
 **Tools & Technologies**
 * **Airbyte:** Open-source data integration tool for ELT processes.
 * **SQL:** For defining schema structures and executing data merges/inserts/upserts.
-* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to Production.
+* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
 
 **Key Features**
 * **PII Protection:** Implemented robust hashing and encryption logic for sensitive data before it reaches the on-premise storage.
@@ -262,6 +262,7 @@ This project overhauls the standard Apache Airflow alerting mechanism. By integr
 * **Apache Airflow:** Workflow orchestrator.
 * **Power Automate:** Microsoft's low-code workflow automation platform.
 * **MS Teams Webhooks:** For real-time messaging integration.
+* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
 
 **Key Features**
 * **Cost-Efficient Architecture:** Bypassed premium connectors by configuring HTTP URL triggers in Power Automate.
@@ -357,6 +358,7 @@ A critical security infrastructure project aimed at fortifying data privacy comp
 **Tools & Technologies**
 * **Python (PyCryptodome):** Utilized for robust encryption and hashing algorithms.
 * **PostgreSQL (Cloud DWS):** Relational database management.
+* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
 
 **Key Features**
 * **Irreversible Hashing:** Added dedicated hash columns for emails and phone numbers to allow data analysis without exposing raw PII.
@@ -440,16 +442,17 @@ Architected a comprehensive data quality framework from scratch to ensure the in
 **Tools & Technologies**
 * **Apache Airflow:** For scheduling and dependency management.
 * **SQL:** For executing validation logic.
+* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
 
 **Key Features**
 * **Six-Dimensional Checking:** Automated checks for Completeness, Consistency, Validity, Uniqueness, Accuracy, and Freshness.
-* **SDLC Standardized Testing:** Developed comprehensive Unit Testing documentation and test cases aligning with standard Software Development Life Cycles.
+* **SDLC Standardized Testing:** Developed comprehensive Unit Testing documentation and test cases aligning with the standard SDLC.
 
 ---
 
 ### 6. Global Retail Visitor Analytics Dashboard
 **Overview**
-Developed a comprehensive Business Intelligence solution to track user engagement and campaign performance. The dashboard integrates data from physical registration kiosks and digital voucher systems to provide actionable insights for Business Analysts.
+Developed a comprehensive Business Intelligence solution to track user engagement and campaign performance. The dashboard integrates data from physical registration kiosks and digital voucher systems to provide actionable insights for the Business Teams.
 
 **Project Components**
 * **Data Sources:** Visitor Registrations and Digital Voucher Databases.
@@ -473,6 +476,7 @@ Modernized legacy data pipelines for a retail tenant management system to align 
 **Key Features**
 * **Pipeline Optimization:** Refactored Airflow DAGs to utilize Dynamic Task Mapping, reducing pipeline complexity.
 * **Performance Enhancements:** Prevented system timeouts and reduced Airflow overload by limiting redundant SQL executions and implementing best practices.
+* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
 
 **💻 Code Snippet: Metadata-Driven Orchestration & Dynamic TaskGroups**
 ```python
