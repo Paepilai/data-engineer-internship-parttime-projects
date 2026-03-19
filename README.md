@@ -34,20 +34,19 @@ This project demonstrates the automation of complex data reporting and distribut
 
 **Code Snippet: In-Database PII Cryptography & Key Injection**
 
-**Enterprise Data Security: PII Encryption & Hashing Framework**
-  ------------------------------------------------------------------
+* **Enterprise Data Security: PII Encryption & Hashing Framework**
   This snippet demonstrates secure in-database data transformation. 
   It handles the decryption of legacy data and re-encrypts it using 
   AES-256 (CBC mode) and SHA-256. Cryptographic keys are securely 
   injected at runtime via Airflow template parameters to ensure 
   Zero-Trust architecture (keys are never hardcoded).
 
-WITH Secure_PII_Transformation AS (
-    SELECT
-        user_uuid,
-        created_timestamp,
-        created_by_system,
-        identity_type,
+      WITH Secure_PII_Transformation AS (
+          SELECT
+              user_uuid,
+              created_timestamp,
+              created_by_system,
+              identity_type,
 
         -- 1. Re-Encryption: Decrypt legacy bytea, then re-encrypt with AES-256
         CASE 
@@ -80,17 +79,17 @@ WITH Secure_PII_Transformation AS (
             '{{ var.value.enterprise_standard_encryption_key }}'
         ) AS secured_identity_number
 
-    FROM raw_landing.user_profiles
-    WHERE user_status = 'ACTIVE'
-)
-SELECT 
-    user_uuid,
-    identity_type,
-    encrypted_gov_id,
-    encrypted_phone,
-    secured_identity_number,
-    created_timestamp
-FROM Secure_PII_Transformation;
+      FROM raw_landing.user_profiles
+      WHERE user_status = 'ACTIVE'
+      )
+        SELECT 
+        user_uuid,
+        identity_type,
+        encrypted_gov_id,
+        encrypted_phone,
+        secured_identity_number,
+        created_timestamp
+        FROM Secure_PII_Transformation;
 
 ---
 
