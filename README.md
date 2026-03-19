@@ -14,6 +14,9 @@ I am a Data Engineer passionate about transforming manual, time-consuming workfl
 **Overview**
 This project demonstrates the automation of complex data reporting and distribution for enterprise Point of Sale (POS) systems. It replaces manual Excel reporting with a fully orchestrated, programmatic workflow.
 
+![POS Data Flow Architecture](Pictures/10.png) 
+*(Caption: High-level data flow from POS ingestion to automated SharePoint distribution.)*
+
 **Project Components**
 * **Data Processing:** Complex SQL queries to extract and transform pre-curated POS data.
 * **Data Formatting:** Dynamic formatting of data into standardized Excel templates.
