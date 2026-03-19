@@ -243,6 +243,47 @@ Designed to handle highly sensitive data, this project involves building a secur
 * **Data Privacy Compliance:** Mastered the handling of sensitive PII data within strict enterprise environments.
 * **CI/CD Workflows:** Gained hands-on experience deploying complex DAGs and SQL scripts using Jenkins.
   
+---
+
+### 3. Serverless Alerting System for Data Pipelines
+**Overview**
+This project overhauls the standard Apache Airflow alerting mechanism. By integrating Power Automate and MS Teams Webhooks, it provides real-time, detailed pipeline status alerts without relying on premium API connectors.
+
+**Project Components**
+* **Trigger Event:** Airflow Task Success/Failure.
+* **Workflow Automation:** Power Automate HTTP Webhooks.
+* **Notification System:** MS Teams Adaptive Cards.
+
+**Tools & Technologies**
+* **Apache Airflow:** Workflow orchestrator.
+* **Power Automate:** Microsoft's low-code workflow automation platform.
+* **MS Teams Webhooks:** For real-time messaging integration.
+
+**Key Features**
+* **Cost-Efficient Architecture:** Bypassed premium connectors by configuring HTTP URL triggers in Power Automate.
+* **Granular Alerting:** Configured alerts to trigger not just on system failures, but also when a task succeeds technically but fails internal business logic validations.
+
+---
+
+## 🌟 Data Engineer Intern Projects
+
+### 4. Enterprise PII Data Security & Hashing Framework
+**Overview**
+A critical security infrastructure project aimed at fortifying data privacy compliance across multiple enterprise domains (Customer Profiles, Visitor Logs, Digital Gift Cards). The solution involved developing advanced cryptographic logic to protect sensitive customer data.
+
+**Project Components**
+* **Cryptographic Layer:** AES Encryption and SHA-256 Hashing.
+* **Query Optimization:** Common Table Expressions (CTEs).
+* **Data Integration:** Merge SQL Files.
+
+**Tools & Technologies**
+* **Python (PyCryptodome):** Utilized for robust encryption and hashing algorithms.
+* **PostgreSQL (Cloud DWS):** Relational database management.
+
+**Key Features**
+* **Irreversible Hashing:** Added dedicated hash columns for emails and phone numbers to allow data analysis without exposing raw PII.
+* **Optimized Decryption:** Refactored legacy encryption logic by moving decryption processes into SQL CTEs, drastically reducing redundant calculations and query execution time.
+
 **Code Snippet: In-Database PII Cryptography & Key Injection**
 
 * **Enterprise Data Security: PII Encryption & Hashing Framework**
@@ -306,47 +347,7 @@ Designed to handle highly sensitive data, this project involves building a secur
       created_timestamp
   FROM Secure_PII_Transformation;
     ```
----
-
-### 3. Serverless Alerting System for Data Pipelines
-**Overview**
-This project overhauls the standard Apache Airflow alerting mechanism. By integrating Power Automate and MS Teams Webhooks, it provides real-time, detailed pipeline status alerts without relying on premium API connectors.
-
-**Project Components**
-* **Trigger Event:** Airflow Task Success/Failure.
-* **Workflow Automation:** Power Automate HTTP Webhooks.
-* **Notification System:** MS Teams Adaptive Cards.
-
-**Tools & Technologies**
-* **Apache Airflow:** Workflow orchestrator.
-* **Power Automate:** Microsoft's low-code workflow automation platform.
-* **MS Teams Webhooks:** For real-time messaging integration.
-
-**Key Features**
-* **Cost-Efficient Architecture:** Bypassed premium connectors by configuring HTTP URL triggers in Power Automate.
-* **Granular Alerting:** Configured alerts to trigger not just on system failures, but also when a task succeeds technically but fails internal business logic validations.
-
----
-
-## 🌟 Data Engineer Intern Projects
-
-### 4. Enterprise PII Data Security & Hashing Framework
-**Overview**
-A critical security infrastructure project aimed at fortifying data privacy compliance across multiple enterprise domains (Customer Profiles, Visitor Logs, Digital Gift Cards). The solution involved developing advanced cryptographic logic to protect sensitive customer data.
-
-**Project Components**
-* **Cryptographic Layer:** AES Encryption and SHA-256 Hashing.
-* **Query Optimization:** Common Table Expressions (CTEs).
-* **Data Integration:** Merge SQL Files.
-
-**Tools & Technologies**
-* **Python (PyCryptodome):** Utilized for robust encryption and hashing algorithms.
-* **PostgreSQL (Cloud DWS):** Relational database management.
-
-**Key Features**
-* **Irreversible Hashing:** Added dedicated hash columns for emails and phone numbers to allow data analysis without exposing raw PII.
-* **Optimized Decryption:** Refactored legacy encryption logic by moving decryption processes into SQL CTEs, drastically reducing redundant calculations and query execution time.
-
+  
 ---
 
 ### 5. Automated Data Quality & Validation Framework
