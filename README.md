@@ -396,6 +396,94 @@ Modernized legacy data pipelines for a retail tenant management system to align 
 * **Pipeline Optimization:** Refactored Airflow DAGs to utilize Dynamic Task Mapping, reducing pipeline complexity.
 * **Performance Enhancements:** Prevented system timeouts and reduced Airflow overload by limiting redundant SQL executions and implementing best practices.
 
+**💻 Code Snippet: Metadata-Driven Orchestration & Dynamic TaskGroups**
+```python
+/* Modern Airflow Orchestration: Metadata-Driven ELT Pipeline
+  ------------------------------------------------------------------
+  This snippet demonstrates an advanced Airflow 2.x orchestration pattern. 
+  Instead of hardcoding tasks for each database table, it uses a @task_group 
+  to dynamically generate the entire ELT lifecycle (External -> Staging -> 
+  UPSERT -> Clean) based on an injected metadata configuration. 
+  
+  It also utilizes Airflow Datasets (data-aware scheduling) to automatically 
+  trigger downstream dependencies the moment the UPSERT completes.
+*/
+
+import logging
+from typing import Any, Dict
+from airflow.decorators import dag, task_group
+from airflow.providers.common.sql.operators.sql import SQLExecuteQueryOperator
+from airflow.models.baseoperator import chain
+from airflow.datasets import Dataset
+
+logger = logging.getLogger("airflow.task")
+
+@task_group(group_id="dynamic_staging_to_warehouse")
+def staging_to_warehouse(conf: Dict[str, Any]) -> None:
+    """
+    Dynamically generates the ELT workflow for every table defined 
+    in the enterprise configuration dictionary.
+    """
+    
+    # Iterate through the metadata configuration to build tasks dynamically
+    for table_key, table_config in conf.get("tables", {}).items():
+        table_name = table_config.get("target_table")
+        
+        # 1. Define Data-Aware Scheduling Trigger (Airflow Datasets)
+        # This automatically alerts downstream DAGs that fresh data is ready
+        dataset_outlet = Dataset(
+            f"obs://enterprise-datalake-prod/curated_zone/{table_name}",
+            extra={"domain": "enterprise_tenant", "producer": "DataPlatform"}
+        )
+
+        # 2. Build the ELT task chain for the specific table
+        create_external_table = SQLExecuteQueryOperator(
+            task_id=f"create_ext_{table_name}",
+            conn_id="enterprise_dwh_prod",
+            sql=f"{table_key}/create_ext.sql",
+            params={"schema": conf.get("landing_schema")}
+        )
+
+        load_to_staging = SQLExecuteQueryOperator(
+            task_id=f"load_stg_{table_name}",
+            conn_id="enterprise_dwh_prod",
+            sql=f"{table_key}/insert_stg.sql",
+            params={
+                "landing_schema": conf.get("landing_schema"),
+                "staging_schema": conf.get("staging_schema")
+            }
+        )
+
+        # 3. UPSERT Target Table and Trigger Downstream Dataset
+        upsert_to_target = SQLExecuteQueryOperator(
+            task_id=f"upsert_{table_name}",
+            conn_id="enterprise_dwh_prod",
+            sql=f"{table_key}/upsert.sql",
+            params={
+                "staging_schema": conf.get("staging_schema"),
+                "target_schema": conf.get("target_schema")
+            },
+            outlets=[dataset_outlet]  # Data-aware scheduling applied here
+        )
+
+        clean_staging = SQLExecuteQueryOperator(
+            task_id=f"clean_stg_{table_name}",
+            conn_id="enterprise_dwh_prod",
+            sql=f"{table_key}/truncate_stg.sql",
+            params={"staging_schema": conf.get("staging_schema")}
+        )
+
+        # 4. Chain the dynamically generated tasks
+        chain(
+            create_external_table, 
+            load_to_staging, 
+            upsert_to_target, 
+            clean_staging
+        )
+
+    logger.info("Successfully generated dynamic ELT task group.")
+```
+
 ---
 
 ### 8. Enterprise Mobile App Historical Data Processing
