@@ -31,66 +31,101 @@ This project demonstrates the automation of complex data reporting and distribut
 **Learnings & Skills**
 * **API Integration:** Learned to seamlessly integrate data pipelines with enterprise file-sharing systems (SharePoint).
 * **Business Logic Implementation:** Translated complex POS reporting requirements into automated SQL/Python scripts.
+  
+**Code Snippet: Dynamic Airflow Orchestration & Task Mapping**
 
-**Code Snippet: In-Database PII Cryptography & Key Injection**
+* **Enterprise Airflow DAG: Dynamic Task Generation & Fan-In/Fan-Out Workflow**
+  This snippet demonstrates a highly scalable orchestration pattern. 
+  Instead of hardcoding tasks, it dynamically generates SQL execution 
+  tasks based on configuration files, processes them in parallel 
+  within a TaskGroup, and uses a Fan-In pattern to compile the final report.
 
-* **Enterprise Data Security: PII Encryption & Hashing Framework**
-  This snippet demonstrates secure in-database data transformation. 
-  It handles the decryption of legacy data and re-encrypts it using 
-  AES-256 (CBC mode) and SHA-256. Cryptographic keys are securely 
-  injected at runtime via Airflow template parameters to ensure 
-  Zero-Trust architecture (keys are never hardcoded).
-
-      WITH Secure_PII_Transformation AS (
-          SELECT
-              user_uuid,
-              created_timestamp,
-              created_by_system,
-              identity_type,
-
-        -- 1. Re-Encryption: Decrypt legacy bytea, then re-encrypt with AES-256
-        CASE 
-            WHEN government_id = '\x' THEN NULL 
-            ELSE 
-                enterprise_encrypt(
-                    legacy_sym_decrypt(government_id::bytea, '{{ params.legacy_decryption_key }}'),
-                    '{{ params.master_encryption_key }}', 
-                    'aes256', 
-                    'cbc', 
-                    'sha256'
-                ) 
-        END AS encrypted_gov_id,
-
-        CASE 
-            WHEN primary_phone = '\x' THEN NULL 
-            ELSE 
-                enterprise_encrypt(
-                    legacy_sym_decrypt(primary_phone::bytea, '{{ params.legacy_decryption_key }}'),
-                    '{{ params.master_encryption_key }}', 
-                    'aes256', 
-                    'cbc', 
-                    'sha256'
-                ) 
-        END AS encrypted_phone,
-
-        -- 2. Standard Enterprise Encryption Wrapper using Airflow Variables
-        enterprise_sec.standard_encrypt(
-            identity_number, 
-            '{{ var.value.enterprise_standard_encryption_key }}'
-        ) AS secured_identity_number
-
-      FROM raw_landing.user_profiles
-      WHERE user_status = 'ACTIVE'
-      )
-        SELECT 
-        user_uuid,
-        identity_type,
-        encrypted_gov_id,
-        encrypted_phone,
-        secured_identity_number,
-        created_timestamp
-        FROM Secure_PII_Transformation;
-
+  ```python
+  from typing import Any, Dict, List
+  import logging
+  from pathlib import Path
+  from pendulum import datetime
+  from airflow.decorators import dag, task, task_group
+  from airflow.models.dagrun import DagRun
+  from airflow.models.variable import Variable
+  from airflow.utils.task_group import TaskGroup
+  import re
+  
+  logger = logging.getLogger("airflow.task")
+  
+  # --- Enterprise DAG Configurations ---
+  DAG_OWNER = "DataEngineering_Team"
+  DAG_ID = "enterprise_automated_reporting_pipeline"
+  SCHEDULE = "0 8 * * *"  
+  TIMEZONE = "UTC"
+  TAGS = ["domain:sales_reporting", "automation", "api_integration"]
+  CONN_ID = "enterprise_dwh_prod" 
+  
+  DEFAULT_ARGS = {
+      "owner": DAG_OWNER,   
+      "email_on_failure": False,
+      "retries": 1,
+  }
+  
+  @dag(
+      dag_id=DAG_ID,
+      default_args=DEFAULT_ARGS,
+      schedule_interval=SCHEDULE,
+      start_date=datetime(2024, 1, 1, tz=TIMEZONE),
+      catchup=False,
+      tags=TAGS,
+  )
+  def automated_reporting_pipeline():
+      
+      # 1. Initialization Task
+      @task
+      def init_pipeline(**kwargs):
+          logger.info("Initializing automated reporting configurations...")
+          # Fetching dynamic configurations from Airflow Variables
+          return Variable.get("reporting_pipeline_config", deserialize_json=True)
+  
+      # 2. Dynamic Task Group for Parallel Execution
+      @task_group(group_id='process_regional_reports')
+      def process_reports(pipeline_config: Dict[str, Any]):
+          
+          extracted_data_list = []
+          
+          # FAN-OUT: Dynamically generate a task for every SQL query in the config
+          for sql_key, sql_file in pipeline_config.get('sql_mappings', {}).items():
+              
+              # Sanitize task IDs for Airflow compliance
+              safe_task_id = f"execute_sql_{re.sub(r'[^a-zA-Z0-9_.-]', '_', sql_key)}"
+              
+              # Trigger the fetch task safely using .override() to assign the dynamic ID
+              execute_op = execute_sql_data_task.override(task_id=safe_task_id)(
+                  sql_key=sql_key, 
+                  sql_file=sql_file, 
+                  conn_id=CONN_ID, 
+                  execution_date_str="{{ ds }}"
+              )
+              
+              # Append the output reference to our list for the Fan-In downstream
+              extracted_data_list.append(execute_op)
+  
+          # FAN-IN: Compile the report ONLY after all parallel SQL fetches succeed
+          compile_op = compile_report_task(
+              all_extracted_data=extracted_data_list,
+              execution_date_str="{{ ds }}"
+          )
+          
+          # API Integration & Cleanup Downstream
+          upload_op = upload_to_enterprise_sharepoint(compile_op)
+          cleanup_op = cleanup_temp_files(upload_op)
+  
+          compile_op >> upload_op >> cleanup_op
+  
+      # --- Define DAG Dependencies ---
+      config_data = init_pipeline()
+      process_reports(config_data)
+  
+  # Instantiate the DAG
+  dag_instance = automated_reporting_pipeline()
+  ```
 ---
 
 ### 2. Secure Enterprise Pipeline & On-Premise Synchronization
@@ -114,7 +149,70 @@ Designed to handle highly sensitive data, this project involves building a secur
 **Learnings & Skills**
 * **Data Privacy Compliance:** Mastered the handling of sensitive PII data within strict enterprise environments.
 * **CI/CD Workflows:** Gained hands-on experience deploying complex DAGs and SQL scripts using Jenkins.
+  
+**Code Snippet: In-Database PII Cryptography & Key Injection**
 
+* **Enterprise Data Security: PII Encryption & Hashing Framework**
+  This snippet demonstrates secure in-database data transformation. 
+  It handles the decryption of legacy data and re-encrypts it using 
+  AES-256 (CBC mode) and SHA-256. Cryptographic keys are securely 
+  injected at runtime via Airflow template parameters to ensure 
+  Zero-Trust architecture (keys are never hardcoded).
+
+  ```sql
+  WITH Secure_PII_Transformation AS (
+      SELECT
+          user_uuid,
+          created_timestamp,
+          created_by_system,
+          identity_type,
+  
+          -- 1. Complex Re-Encryption: Safely handle empty byte arrays ('\x'), 
+          -- decrypt legacy data, and re-encrypt using central AES-256 functions.
+          CASE 
+              WHEN government_id = '\x' THEN NULL 
+              ELSE 
+                  enterprise_core_encrypt(
+                      legacy_pgp_decrypt(government_id::bytea, '{{ params.legacy_decryption_key }}'),
+                      '{{ params.master_encryption_key }}', 
+                      'aes256', 
+                      'cbc', 
+                      'sha256'
+                  ) 
+          END AS encrypted_gov_id,
+  
+          CASE 
+              WHEN primary_phone = '\x' THEN NULL 
+              ELSE 
+                  enterprise_core_encrypt(
+                      legacy_pgp_decrypt(primary_phone::bytea, '{{ params.legacy_decryption_key }}'),
+                      '{{ params.master_encryption_key }}', 
+                      'aes256', 
+                      'cbc', 
+                      'sha256'
+                  ) 
+          END AS encrypted_phone,
+  
+          -- 2. Standard Enterprise Encryption: Utilizing the centralized wrapper 
+          -- function combined with Airflow Global Variables.
+          enterprise_custom_encrypt(
+              identity_number, 
+              '{{ var.value.tenant_standard_encryption_key }}'
+          ) AS secured_identity_number
+  
+      FROM raw_landing.user_profiles
+      WHERE user_status = 'ACTIVE'
+  )
+  
+  SELECT 
+      user_uuid,
+      identity_type,
+      encrypted_gov_id,
+      encrypted_phone,
+      secured_identity_number,
+      created_timestamp
+  FROM Secure_PII_Transformation;
+    ```
 ---
 
 ### 3. Serverless Alerting System for Data Pipelines
