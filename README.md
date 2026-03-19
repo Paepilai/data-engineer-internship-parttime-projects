@@ -15,7 +15,6 @@ I am a Data Engineer passionate about transforming manual, time-consuming workfl
 This project demonstrates the automation of complex data reporting and distribution for enterprise Point of Sale (POS) systems. It replaces manual Excel reporting with a fully orchestrated, programmatic workflow.
 
 ![POS Data Flow Architecture](Pictures/10.png) 
-*(Caption: High-level data flow from POS ingestion to automated SharePoint distribution.)*
 
 **Project Components**
 * **Data Processing:** Complex SQL queries to extract and transform pre-curated POS data.
@@ -227,6 +226,8 @@ ORDER BY
 ### 2. Secure Enterprise Pipeline & On-Premise Synchronization
 **Overview**
 Designed to handle highly sensitive data, this project involves building a secure ETL pipeline that routes data across DEV, QA, and Production environments while enforcing strict PII (Personally Identifiable Information) encryption on on-premise databases.
+
+![POS Data Flow Architecture](Pictures/10.png) 
 
 **Project Components**
 * **Data Ingestion:** Airbyte Connections.
