@@ -34,7 +34,7 @@ This project demonstrates the automation of complex data reporting and distribut
 
 **Code Snippet: In-Database PII Cryptography & Key Injection**
 
-*** Enterprise Data Security: PII Encryption & Hashing Framework***
+**Enterprise Data Security: PII Encryption & Hashing Framework**
   ------------------------------------------------------------------
   This snippet demonstrates secure in-database data transformation. 
   It handles the decryption of legacy data and re-encrypts it using 
