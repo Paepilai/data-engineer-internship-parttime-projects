@@ -33,6 +33,7 @@ This project demonstrates the automation of complex data reporting and distribut
 * **Business Logic Implementation:** Translated complex POS reporting requirements into automated SQL/Python scripts.
 
 **Code Snippet: In-Database PII Cryptography & Key Injection**
+
 /* Enterprise Data Security: PII Encryption & Hashing Framework
   ------------------------------------------------------------------
   This snippet demonstrates secure in-database data transformation. 
