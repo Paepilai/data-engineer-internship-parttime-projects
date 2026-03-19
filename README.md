@@ -31,7 +31,100 @@ This project demonstrates the automation of complex data reporting and distribut
 **Learnings & Skills**
 * **API Integration:** Learned to seamlessly integrate data pipelines with enterprise file-sharing systems (SharePoint).
 * **Business Logic Implementation:** Translated complex POS reporting requirements into automated SQL/Python scripts.
-  
+
+**Code Snippet: Advanced Time-Series Aggregation & Ranking**
+
+* **Advanced Data Warehousing: Time-Series Comparison & Dynamic Ranking**
+  This query extracts transactional data and calculates multi-period 
+  sales comparisons (Current Period, Previous Period) in a single pass.
+  It utilizes GROUPING SETS for multi-level hierarchical totals and 
+  Window Functions for dynamic partitioning and ranking.
+*/
+```sql
+WITH Aggregated_Metrics AS (
+    SELECT
+        COALESCE(dp.product_group, 'Uncategorized') AS prod_group,
+        COALESCE(dp.product_id, 'UNKNOWN') AS prod_id,
+        COALESCE(dp.product_desc, 'No Description') AS prod_desc,
+        COALESCE(dp.manufacturer_id, 'N/A') AS mfg_id,
+
+        -- Identify grouping levels for multi-tier aggregations
+        GROUPING(dp.product_group) AS is_group_total,
+        GROUPING(dp.product_id) AS is_product_total,
+
+        -- [CURRENT PERIOD] Conditional Aggregation for Volume & Revenue
+        SUM(CASE 
+            WHEN fo.order_timestamp >= date_trunc('month', '{report_date}'::date) 
+            AND fo.order_timestamp < '{report_date}'::date + 1 
+            THEN fsl.quantity * COALESCE(fo.conversion_multiplier, 1) ELSE 0 
+        END) AS curr_period_vol,
+        
+        SUM(CASE 
+            WHEN fo.order_timestamp >= date_trunc('month', '{report_date}'::date) 
+            AND fo.order_timestamp < '{report_date}'::date + 1 
+            THEN fsl.revenue_base * COALESCE(fo.conversion_multiplier, 1) ELSE 0 
+        END) AS curr_period_rev,
+
+        -- [PREVIOUS PERIOD] Dynamic Date Intervals
+        SUM(CASE 
+            WHEN fo.order_timestamp >= date_trunc('month', '{report_date}'::date - interval '1 month') 
+            AND fo.order_timestamp < date_trunc('month', '{report_date}'::date) 
+            THEN fsl.revenue_base * COALESCE(fo.conversion_multiplier, 1) ELSE 0 
+        END) AS prev_period_rev
+
+    FROM enterprise_dwh.fact_sales_line_items fsl 
+    LEFT JOIN enterprise_dwh.fact_orders fo 
+        ON fsl.order_key = fo.order_key
+    LEFT JOIN enterprise_dwh.dim_product dp 
+        ON fsl.product_key = dp.product_key 
+
+    WHERE fo.order_timestamp >= date_trunc('month', '{report_date}'::date - interval '3 month') 
+      AND fo.order_timestamp < '{report_date}'::date + 1
+      AND fo.order_status NOT IN ('Pending', 'Cancelled') 
+      AND fsl.invoice_id IS NOT NULL 
+
+    -- Calculate granular details alongside Group Totals and Grand Totals
+    GROUP BY GROUPING SETS (
+        (dp.product_group, dp.product_id, dp.product_desc, dp.manufacturer_id),
+        (dp.product_group),
+        ()
+    )
+)
+
+SELECT
+    CASE WHEN is_group_total = 1 THEN 'Grand Total' ELSE prod_group END AS "Product Group",
+    
+    -- Dynamic Ranking: Rank items within their specific group based on Revenue
+    CASE 
+        WHEN is_product_total = 1 OR COALESCE(curr_period_rev, 0) = 0 THEN NULL 
+        ELSE RANK() OVER (PARTITION BY is_product_total ORDER BY curr_period_rev DESC NULLS LAST) 
+    END AS "Group Rank",
+    
+    CASE 
+        WHEN is_group_total = 1 THEN NULL 
+        WHEN is_product_total = 1 THEN 'Total' 
+        ELSE prod_id 
+    END AS "Product ID",
+    
+    CASE WHEN is_product_total = 1 THEN NULL ELSE prod_desc END AS "Product Description",
+
+    ROUND(curr_period_vol, 2) AS "Volume Sold",
+    ROUND(curr_period_rev, 2) AS "Base Revenue",
+    ROUND(curr_period_rev / NULLIF(curr_period_vol, 0), 2) AS "Average Unit Price",
+
+    ROUND(prev_period_rev, 2) AS "Previous Period Revenue",
+    ROUND(prev_period_rev - curr_period_rev, 2) AS "Period Variance"
+
+FROM Aggregated_Metrics
+
+ORDER BY 
+    is_group_total ASC,
+    CASE WHEN prod_group = 'Uncategorized' THEN 1 ELSE 0 END ASC,
+    prod_group ASC,
+    is_product_total ASC,
+    curr_period_rev DESC NULLS LAST;
+```
+    
 **Code Snippet: Dynamic Airflow Orchestration & Task Mapping**
 
 * **Enterprise Airflow DAG: Dynamic Task Generation & Fan-In/Fan-Out Workflow**
