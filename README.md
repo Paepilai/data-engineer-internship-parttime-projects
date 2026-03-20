@@ -36,7 +36,8 @@ This project demonstrates the automation of complex data reporting and distribut
 * **API Integration:** Learned to seamlessly integrate data pipelines with enterprise file-sharing systems (SharePoint).
 * **Business Logic Implementation:** Translated complex POS reporting requirements into automated SQL/Python scripts.
 
-**Code Snippet: Advanced Time-Series Aggregation & Ranking**
+<details>
+<summary><b>💻 Click to expand Code Snippet: Advanced Time-Series Aggregation & Ranking</b></summary>
 
 * **Advanced Data Warehousing: Time-Series Comparison & Dynamic Ranking**
   This query extracts transactional data and calculates multi-period 
@@ -128,8 +129,10 @@ ORDER BY
     is_product_total ASC,
     curr_period_rev DESC NULLS LAST;
 ```
-    
-**Code Snippet: Dynamic Airflow Orchestration & Task Mapping**
+</details>
+
+<details>
+<summary><b>💻 Click to expand Code Snippet: Dynamic Airflow Orchestration & Task Mapping</b></summary>
 
 * **Enterprise Airflow DAG: Dynamic Task Generation & Fan-In/Fan-Out Workflow**
   This snippet demonstrates a highly scalable orchestration pattern. 
@@ -221,6 +224,8 @@ ORDER BY
   
   dag_instance = automated_reporting_pipeline()
   ```
+</details>
+
 ---
 
 ### 2. Secure Enterprise Pipeline & On-Premise Synchronization
@@ -268,18 +273,17 @@ This project overhauls the standard Apache Airflow alerting mechanism. By integr
 * **Cost-Efficient Architecture:** Bypassed premium connectors by configuring HTTP URL triggers in Power Automate.
 * **Granular Alerting:** Configured alerts to trigger not just on system failures, but also when a task succeeds technically but fails internal business logic validations.
 
-**💻 Code Snippet: Custom Business Logic Notifier (Python/Airflow)**
-```python
-/* Custom Airflow Notifier: Business Logic Alerting
-  ------------------------------------------------------------------
+<details>
+<summary><b>💻 Click to expand Code Snippet: Custom Business Logic Notifier (Python/Airflow)</b></summary>
+
+* **Custom Airflow Notifier: Business Logic Alerting**
   This Python class extends Airflow's BaseNotifier to send Adaptive Cards 
   to Microsoft Teams. 
-  
   The true value is in the `notify` method: instead of relying on standard 
   system crashes, it pulls XCom data to detect "Silent Failures" — where 
   the SQL executed successfully, but the resulting data failed validation rules.
-*/
-
+  
+```python
 import logging
 import requests
 from airflow.models import Variable
@@ -341,6 +345,7 @@ class EnterpriseTeamsNotifier(BaseNotifier):
             logger.error(f"Failed to send Teams notification: {e}")
             raise
 ```
+</details>
 
 ---
 
@@ -364,7 +369,8 @@ A critical security infrastructure project aimed at fortifying data privacy comp
 * **Irreversible Hashing:** Added dedicated hash columns for emails and phone numbers to allow data analysis without exposing raw PII.
 * **Optimized Decryption:** Refactored legacy encryption logic by moving decryption processes into SQL CTEs, drastically reducing redundant calculations and query execution time.
 
-**Code Snippet: In-Database PII Cryptography & Key Injection**
+<details>
+<summary><b>💻 Click to expand Code Snippet: In-Database PII Cryptography & Key Injection**</b></summary>
 
 * **Enterprise Data Security: PII Encryption & Hashing Framework**
   This snippet demonstrates secure in-database data transformation. 
@@ -427,7 +433,8 @@ A critical security infrastructure project aimed at fortifying data privacy comp
       created_timestamp
   FROM Secure_PII_Transformation;
     ```
-  
+</details>
+
 ---
 
 ### 5. Automated Data Quality & Validation Framework
@@ -481,19 +488,18 @@ Modernized legacy data pipelines for a retail tenant management system to align 
 * **Performance Enhancements:** Prevented system timeouts and reduced Airflow overload by limiting redundant SQL executions and implementing best practices.
 * **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
 
-**💻 Code Snippet: Metadata-Driven Orchestration & Dynamic TaskGroups**
-```python
-/* Modern Airflow Orchestration: Metadata-Driven ELT Pipeline
-  ------------------------------------------------------------------
+<details>
+<summary><b>💻 Click to expand Code Snippet: Metadata-Driven Orchestration & Dynamic TaskGroups</b></summary>
+
+* **Modern Airflow Orchestration: Metadata-Driven ELT Pipeline**
   This snippet demonstrates an advanced Airflow 2.x orchestration pattern. 
   Instead of hardcoding tasks for each database table, it uses a @task_group 
   to dynamically generate the entire ELT lifecycle (External -> Staging -> 
   UPSERT -> Clean) based on an injected metadata configuration. 
-  
   It also utilizes Airflow Datasets (data-aware scheduling) to automatically 
   trigger downstream dependencies the moment the UPSERT completes.
-*/
 
+```python
 import logging
 from typing import Any, Dict
 from airflow.decorators import dag, task_group
@@ -568,6 +574,7 @@ def staging_to_warehouse(conf: Dict[str, Any]) -> None:
 
     logger.info("Successfully generated dynamic ELT task group.")
 ```
+</details>
 
 ---
 
