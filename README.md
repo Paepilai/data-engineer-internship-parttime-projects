@@ -258,9 +258,6 @@ Designed to handle highly sensitive data, this project involves building a secur
 **Overview**
 Architected a comprehensive data quality framework from scratch to ensure the integrity of a major digital voucher data warehouse. To support this, I overhauled the standard Apache Airflow alerting mechanism by integrating Power Automate and MS Teams Webhooks, providing real-time, detailed pipeline status and data quality alerts without relying on premium API connectors.
 
-![POS Data Flow Architecture](Pictures/12.png) 
-![POS Data Flow Architecture](Pictures/13.png) 
-
 **Project Components**
 * **Data Modeling & Quality Rules:** Schema definition and SQL scripts testing 6 dimensions of data quality.
 * **Orchestration & Trigger Events:** Airflow DAGs managing validation dependencies and evaluating custom task states via XComs.
