@@ -13,25 +13,25 @@ I am a Data Engineer passionate about transforming manual, time-consuming workfl
 
 ### 1. Enterprise POS Automated Reporting & Distribution System
 **Overview**
-This project demonstrates the automation of complex data reporting and distribution for enterprise Point of Sale (POS) systems. It replaces manual Excel reporting with a fully orchestrated, programmatic workflow.
+This project demonstrates the automation of complex data reporting and distribution for enterprise Point of Sale (POS) systems. It replaces manual Excel reporting with a fully orchestrated workflow combining Apache Airflow for data transformation and SharePoint API & Power Automate for final delivery.
 
 ![POS Data Flow Architecture](Pictures/10.png) 
 
 **Project Components**
 * **Data Processing:** Complex SQL queries to extract and transform pre-curated POS data.
 * **Data Formatting:** Dynamic formatting of data into standardized Excel templates.
-* **Data Distribution:** Automated delivery pipelines via SharePoint and Email APIs.
+* **Data Distribution:** Automated file delivery to enterprise directories via the SharePoint API, paired with an event-driven Power Automate workflow that sends notification emails and access links to stakeholders.
 
 **Tools & Technologies**
 * **Python & SQL:** Core logic for heavy data transformation, query execution, and template formatting.
-* **Apache Airflow:** Orchestrates the scheduling and execution of the reporting jobs.
-* **SharePoint API:** Automates file placement into specific directories.
-* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
-* 
+* **Apache Airflow:** Orchestrates the scheduling, execution, and SharePoint API uploads.
+* **SharePoint API:** Automates file placement into specific enterprise directories.
+* **Power Automate:** Triggers automated email alerts containing direct SharePoint links to business users once files are successfully placed.
+
 **Key Features**
 * **Advanced Data Extraction:** Utilized complex SQL logic to pull exact reporting metrics from vast curated datasets.
-* **Automated Report Delivery:** Formatted Excel templates dynamically and delivered them directly to stakeholders via email and SharePoint APIs, completely eliminating manual export tasks.
-
+* **Decoupled Delivery & Notification:** Handled the heavy lifting of file storage via Airflow and the SharePoint API, while leveraging Power Automate to deliver clean, link-embedded email notifications to stakeholders, completely eliminating manual export tasks.
+  
 **Learnings & Skills**
 * **API Integration:** Learned to seamlessly integrate data pipelines with enterprise file-sharing systems (SharePoint).
 * **Business Logic Implementation:** Translated complex POS reporting requirements into automated SQL/Python scripts.
@@ -254,25 +254,30 @@ Designed to handle highly sensitive data, this project involves building a secur
   
 ---
 
-### 3. Serverless Alerting System for Data Pipelines
+### 3. Automated Data Quality Framework & Serverless Alerting System
 **Overview**
-This project overhauls the standard Apache Airflow alerting mechanism. By integrating Power Automate and MS Teams Webhooks, it provides real-time, detailed pipeline status alerts without relying on premium API connectors.
+Architected a comprehensive data quality framework from scratch to ensure the integrity of a major digital voucher data warehouse. To support this, I overhauled the standard Apache Airflow alerting mechanism by integrating Power Automate and MS Teams Webhooks, providing real-time, detailed pipeline status and data quality alerts without relying on premium API connectors.
+
+![POS Data Flow Architecture](Pictures/12.png) 
+![POS Data Flow Architecture](Pictures/13.png) 
 
 **Project Components**
-* **Trigger Event:** Airflow Task Success/Failure.
-* **Workflow Automation:** Power Automate HTTP Webhooks.
-* **Notification System:** MS Teams Adaptive Cards.
-
+* **Data Modeling & Quality Rules:** Schema definition and SQL scripts testing 6 dimensions of data quality.
+* **Orchestration & Trigger Events:** Airflow DAGs managing validation dependencies and evaluating custom task states via XComs.
+* **Workflow Automation & Notification System:** Power Automate HTTP Webhooks pushing dynamic MS Teams Adaptive Cards based on validation results.
+  
 **Tools & Technologies**
-* **Apache Airflow:** Workflow orchestrator.
-* **Power Automate:** Microsoft's low-code workflow automation platform.
-* **MS Teams Webhooks:** For real-time messaging integration.
-* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
+* **Apache Airflow:** Workflow orchestrator for scheduling and dependency management.
+* **SQL:** Core engine for executing the 6-dimensional validation logic.
+* **Power Automate & MS Teams Webhooks:** Low-code workflow automation and real-time messaging integration for alert distribution.
+* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment across all environments (DEV/QA/PROD).
 
 **Key Features**
-* **Cost-Efficient Architecture:** Bypassed premium connectors by configuring HTTP URL triggers in Power Automate.
-* **Granular Alerting:** Configured alerts to trigger not just on system failures, but also when a task succeeds technically but fails internal business logic validations.
-
+* **Six-Dimensional Checking:** Automated checks for Completeness, Consistency, Validity, Uniqueness, Accuracy, and Freshness.
+* **"Silent Failure" Detection (Granular Alerting):** Configured alerts to trigger not just on system crashes, but specifically when a task succeeds technically but the underlying data fails internal business logic validations.
+* **SDLC Standardized Testing:** Developed comprehensive Unit Testing documentation and test cases aligning with standard Software Development Life Cycles.
+* **Cost-Efficient Architecture:** Bypassed premium MS Teams connectors by configuring custom HTTP URL triggers via Power Automate.
+  
 <details>
 <summary><b>💻 Click to expand Code Snippet: Custom Business Logic Notifier (Python/Airflow)</b></summary>
 
@@ -437,30 +442,7 @@ A critical security infrastructure project aimed at fortifying data privacy comp
 
 ---
 
-### 5. Automated Data Quality & Validation Framework
-**Overview**
-Architected a comprehensive data quality framework from scratch to ensure the integrity of a major digital voucher data warehouse. This project involved defining data models, writing rigorous validation rules, and automating the checks.
-
-![POS Data Flow Architecture](Pictures/12.png) 
-![POS Data Flow Architecture](Pictures/13.png) 
-
-**Project Components**
-* **Data Modeling:** Schema and Primary Key definition.
-* **Quality Rules:** SQL scripts testing 6 dimensions of data quality.
-* **Orchestration:** Airflow Validation and Notification DAGs.
-
-**Tools & Technologies**
-* **Apache Airflow:** For scheduling and dependency management.
-* **SQL:** For executing validation logic.
-* **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
-
-**Key Features**
-* **Six-Dimensional Checking:** Automated checks for Completeness, Consistency, Validity, Uniqueness, Accuracy, and Freshness.
-* **SDLC Standardized Testing:** Developed comprehensive Unit Testing documentation and test cases aligning with the standard SDLC.
-
----
-
-### 6. Global Retail Visitor Analytics Dashboard
+### 5. Global Retail Visitor Analytics Dashboard
 **Overview**
 Developed a comprehensive Business Intelligence solution to track user engagement and campaign performance. The dashboard integrates data from physical registration kiosks and digital voucher systems to provide actionable insights for the Business Teams.
 
@@ -479,7 +461,7 @@ Developed a comprehensive Business Intelligence solution to track user engagemen
 
 ---
 
-### 7. Enterprise Tenant Management Pipeline Refactoring
+### 6. Enterprise Tenant Management Pipeline Refactoring
 **Overview**
 Modernized legacy data pipelines for a retail tenant management system to align with new engineering standards. Addressed missing DAG issues by optimizing variables and resolving critical system timeouts.
 
@@ -578,7 +560,7 @@ def staging_to_warehouse(conf: Dict[str, Any]) -> None:
 
 ---
 
-### 8. Enterprise Mobile App Historical Data Processing
+### 7. Enterprise Mobile App Historical Data Processing
 **Overview**
 Engineered the ingestion of massive historical application data. Utilized Python and pandas to clean, transform, and map messy CSV files into the Production Data Warehouse.
 
