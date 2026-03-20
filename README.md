@@ -434,6 +434,9 @@ A critical security infrastructure project aimed at fortifying data privacy comp
 **Overview**
 Architected a comprehensive data quality framework from scratch to ensure the integrity of a major digital voucher data warehouse. This project involved defining data models, writing rigorous validation rules, and automating the checks.
 
+![POS Data Flow Architecture](Pictures/12.png) 
+![POS Data Flow Architecture](Pictures/13.png) 
+
 **Project Components**
 * **Data Modeling:** Schema and Primary Key definition.
 * **Quality Rules:** SQL scripts testing 6 dimensions of data quality.
