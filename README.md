@@ -232,7 +232,7 @@ ORDER BY
 **Overview**
 Designed to handle highly sensitive data, this project involves building a secure ETL pipeline that routes data across DEV, QA, and Production environments while enforcing strict PII (Personally Identifiable Information) encryption on on-premise databases.
 
-![Enterprise PII Security Architecture](Pictures/Enterprise PII Security Architecture.png) 
+![Enterprise PII Security Architecture](Pictures/Enterprise PII Security Architecture.png)
 
 **Project Components**
 * **Data Ingestion:** Airbyte Connections.
