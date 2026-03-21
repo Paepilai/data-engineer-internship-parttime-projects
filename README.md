@@ -230,28 +230,97 @@ ORDER BY
 
 ### 2. Secure Enterprise Pipeline & On-Premise Synchronization
 **Overview**
-Designed to handle highly sensitive data, this project involves building a secure ETL pipeline that routes data across DEV, QA, and Production environments while enforcing strict PII (Personally Identifiable Information) encryption on on-premise databases.
+Designed to handle highly sensitive data, this project involved building a "Secure-by-Design" ELT pipeline. Unlike legacy systems, strict PII encryption and hashing were enforced directly at the on-premise source state prior to ingestion, allowing downstream transformations to operate normally and securely across DEV, QA, and Production environments.
 
 ![Enterprise PII Security Architecture](Pictures/enterprise-pii-security-architecture.png)
 
 **Project Components**
+* **Data Security:** AES-256 Encryption and SHA-256 Hashing executed at the source layer.
 * **Data Ingestion:** Airbyte Connections.
-* **Data Security:** SHA-256 Hashing and Encryption layer.
-* **Data Storage:** On-Premise Database.
+* **Data Storage:** On-Premise Database to Cloud synchronization.
 
 **Tools & Technologies**
-* **Airbyte:** Open-source data integration tool for ELT processes.
+* **Airbyte:** Open-source data integration tool for secure ELT processes.
+* **Apache Airflow:** Orchestrates the ingestion pipeline and handles key management.
+* **PostgreSQL (On-Premise):** Target database utilizing in-database AES-256 encryption.
 * **SQL:** For defining schema structures and executing data merges/inserts/upserts.
 * **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
 
 **Key Features**
-* **PII Protection:** Implemented robust hashing and encryption logic for sensitive data before it reaches the on-premise storage.
+* **Source-Level PII Protection:** Used security left by implementing robust hashing and encryption logic directly on the on-premise storage *before* ingestion, ensuring no plain-text PII ever traversed the network.
 * **Multi-Environment Deployment:** Managed data flow across Development, QA, and Production environments securely.
-
+  
 **Learnings & Skills**
 * **Data Privacy Compliance:** Mastered the handling of sensitive PII data within strict enterprise environments.
 * **CI/CD Workflows:** Gained hands-on experience deploying complex DAGs and SQL scripts using Jenkins.
+
+<details>
+<summary><b>💻 Click to expand Code Snippet: In-Database Cryptography & Dynamic Key Injection (SQL/Jinja)**</b></summary>
+
+* **Enterprise Data Security: PII Encryption & Hashing Framework**
+  This CTE demonstrates "Zero-Trust" database architecture during the 
+  Transform phase. It decrypts legacy PGP data and immediately re-encrypts 
+  it using AES-256 standard enterprise functions before the final MERGE/UPSERT.
+  Crucially, it utilizes Airflow Jinja templating ({{ params... }}) to dynamically 
+  inject cryptographic keys at runtime, ensuring passwords are never 
+  hardcoded into the repository.
+
+  ```sql
+  WITH Secure_PII_Transformation AS (
+      SELECT
+          user_uuid,
+          created_timestamp,
+          created_by_system,
+          identity_type,
   
+          -- 1. Complex Re-Encryption: Safely handle empty byte arrays ('\x'), 
+          -- decrypt legacy data, and re-encrypt using central AES-256 functions.
+          CASE 
+              WHEN government_id = '\x' THEN NULL 
+              ELSE 
+                  enterprise_core_encrypt(
+                      legacy_pgp_decrypt(government_id::bytea, '{{ params.legacy_decryption_key }}'),
+                      '{{ params.master_encryption_key }}', 
+                      'aes256', 
+                      'cbc', 
+                      'sha256'
+                  ) 
+          END AS encrypted_gov_id,
+  
+          CASE 
+              WHEN primary_phone = '\x' THEN NULL 
+              ELSE 
+                  enterprise_core_encrypt(
+                      legacy_pgp_decrypt(primary_phone::bytea, '{{ params.legacy_decryption_key }}'),
+                      '{{ params.master_encryption_key }}', 
+                      'aes256', 
+                      'cbc', 
+                      'sha256'
+                  ) 
+          END AS encrypted_phone,
+  
+          -- 2. Standard Enterprise Encryption: Utilizing the centralized wrapper 
+          -- function combined with Airflow Global Variables.
+          enterprise_custom_encrypt(
+              identity_number, 
+              '{{ var.value.tenant_standard_encryption_key }}'
+          ) AS secured_identity_number
+  
+      FROM raw_landing.user_profiles
+      WHERE user_status = 'ACTIVE'
+  )
+  
+  SELECT 
+      user_uuid,
+      identity_type,
+      encrypted_gov_id,
+      encrypted_phone,
+      secured_identity_number,
+      created_timestamp
+  FROM Secure_PII_Transformation;
+    ```
+</details>
+
 ---
 
 ### 3. Automated Data Quality Framework & Serverless Alerting System
@@ -358,87 +427,23 @@ class EnterpriseTeamsNotifier(BaseNotifier):
 
 ### 4. Enterprise PII Data Security & Hashing Framework
 **Overview**
-A critical security infrastructure project aimed at fortifying data privacy compliance across multiple enterprise domains (Customer Profiles, Visitor Logs, Digital Gift Cards). The solution involved developing advanced cryptographic logic to protect sensitive customer data.
+A critical security infrastructure project aimed at retrofitting data privacy compliance into live production environments (Customer Profiles, Visitor Logs, Digital Gift Cards). Because the data warehouse was already in production, I engineered advanced cryptographic logic directly into the ELT transformation phase to secure the data without disrupting downstream analytics.
 
 **Project Components**
-* **Cryptographic Layer:** AES Encryption and SHA-256 Hashing.
-* **Query Optimization:** Common Table Expressions (CTEs).
-* **Data Integration:** Merge SQL Files.
 
+* **Cryptographic Layer:** AES-256 Encryption and SHA-256 Hashing.
+* **Query Optimization:** Common Table Expressions (CTEs) for efficient bulk processing.
+* **Data Integration:** Applied during MERGE SQL states.
+  
 **Tools & Technologies**
-* **Python (PyCryptodome):** Utilized for robust encryption and hashing algorithms.
 * **PostgreSQL (Cloud DWS):** Relational database management.
+* **Apache Airflow & SQL:** Handled dynamic secret key injection and heavy transformation logic.
 * **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
 
 **Key Features**
+* **Live-Production Retrofitting:** Safely decrypted legacy data and re-encrypted it using new enterprise standards on the fly during standard transform operations.
 * **Irreversible Hashing:** Added dedicated hash columns for emails and phone numbers to allow data analysis without exposing raw PII.
 * **Optimized Decryption:** Refactored legacy encryption logic by moving decryption processes into SQL CTEs, drastically reducing redundant calculations and query execution time.
-
-<details>
-<summary><b>💻 Click to expand Code Snippet: In-Database PII Cryptography & Key Injection**</b></summary>
-
-* **Enterprise Data Security: PII Encryption & Hashing Framework**
-  This snippet demonstrates secure in-database data transformation. 
-  It handles the decryption of legacy data and re-encrypts it using 
-  AES-256 (CBC mode) and SHA-256. Cryptographic keys are securely 
-  injected at runtime via Airflow template parameters to ensure 
-  Zero-Trust architecture (keys are never hardcoded).
-
-  ```sql
-  WITH Secure_PII_Transformation AS (
-      SELECT
-          user_uuid,
-          created_timestamp,
-          created_by_system,
-          identity_type,
-  
-          -- 1. Complex Re-Encryption: Safely handle empty byte arrays ('\x'), 
-          -- decrypt legacy data, and re-encrypt using central AES-256 functions.
-          CASE 
-              WHEN government_id = '\x' THEN NULL 
-              ELSE 
-                  enterprise_core_encrypt(
-                      legacy_pgp_decrypt(government_id::bytea, '{{ params.legacy_decryption_key }}'),
-                      '{{ params.master_encryption_key }}', 
-                      'aes256', 
-                      'cbc', 
-                      'sha256'
-                  ) 
-          END AS encrypted_gov_id,
-  
-          CASE 
-              WHEN primary_phone = '\x' THEN NULL 
-              ELSE 
-                  enterprise_core_encrypt(
-                      legacy_pgp_decrypt(primary_phone::bytea, '{{ params.legacy_decryption_key }}'),
-                      '{{ params.master_encryption_key }}', 
-                      'aes256', 
-                      'cbc', 
-                      'sha256'
-                  ) 
-          END AS encrypted_phone,
-  
-          -- 2. Standard Enterprise Encryption: Utilizing the centralized wrapper 
-          -- function combined with Airflow Global Variables.
-          enterprise_custom_encrypt(
-              identity_number, 
-              '{{ var.value.tenant_standard_encryption_key }}'
-          ) AS secured_identity_number
-  
-      FROM raw_landing.user_profiles
-      WHERE user_status = 'ACTIVE'
-  )
-  
-  SELECT 
-      user_uuid,
-      identity_type,
-      encrypted_gov_id,
-      encrypted_phone,
-      secured_identity_number,
-      created_timestamp
-  FROM Secure_PII_Transformation;
-    ```
-</details>
 
 ---
 
