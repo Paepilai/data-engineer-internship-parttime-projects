@@ -15,7 +15,7 @@ I am a Data Engineer passionate about transforming manual, time-consuming workfl
 **Overview**
 This project demonstrates the automation of complex data reporting and distribution for enterprise Point of Sale (POS) systems. It replaces manual Excel reporting with a fully orchestrated workflow combining Apache Airflow for data transformation and SharePoint API & Power Automate for final delivery.
 
-![POS Data Flow Architecture](Pictures/10.png) 
+![POS Data Flow Architecture](Pictures/1.png) 
 
 **Project Components**
 * **Data Processing:** Complex SQL queries to extract and transform pre-curated POS data.
@@ -232,7 +232,7 @@ ORDER BY
 **Overview**
 Designed to handle highly sensitive data, this project involves building a secure ETL pipeline that routes data across DEV, QA, and Production environments while enforcing strict PII (Personally Identifiable Information) encryption on on-premise databases.
 
-![POS Data Flow Architecture](Pictures/11.png) 
+![POS Data Flow Architecture](Pictures/2.png) 
 
 **Project Components**
 * **Data Ingestion:** Airbyte Connections.
