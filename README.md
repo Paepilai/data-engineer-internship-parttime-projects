@@ -15,7 +15,7 @@ I am a Data Engineer passionate about transforming manual, time-consuming workfl
 **Overview**
 This project demonstrates the automation of complex data reporting and distribution for enterprise Point of Sale (POS) systems. It replaces manual Excel reporting with a fully orchestrated workflow combining Apache Airflow for data transformation and SharePoint API & Power Automate for final delivery.
 
-![POS Data Flow Architecture](Pictures/POS Data Flow Architecture.png)
+![POS Data Flow Architecture](Pictures/pos-data-flow-architecture.png)
 
 **Project Components**
 * **Data Processing:** Complex SQL queries to extract and transform pre-curated POS data.
@@ -232,7 +232,7 @@ ORDER BY
 **Overview**
 Designed to handle highly sensitive data, this project involves building a secure ETL pipeline that routes data across DEV, QA, and Production environments while enforcing strict PII (Personally Identifiable Information) encryption on on-premise databases.
 
-![Enterprise PII Security Architecture](Pictures/Enterprise PII Security Architecture.png)
+![Enterprise PII Security Architecture](Pictures/enterprise-pii-security-architecture.png)
 
 **Project Components**
 * **Data Ingestion:** Airbyte Connections.
@@ -258,8 +258,8 @@ Designed to handle highly sensitive data, this project involves building a secur
 **Overview**
 Architected a comprehensive data quality framework from scratch to ensure the integrity of a major digital voucher data warehouse. To support this, I overhauled the standard Apache Airflow alerting mechanism by integrating Power Automate and MS Teams Webhooks, providing real-time, detailed pipeline status and data quality alerts without relying on premium API connectors.
 
-![MS Teams Alert Example 1](Pictures/MS Teams Alert Example 1.png) 
-![MS Teams Alert Example 2](Pictures/MS Teams Alert Example 2.png) 
+![MS Teams Alert Example 1](Pictures/ms-teams-alert-example-1.png) 
+![MS Teams Alert Example 2](Pictures/ms-teams-alert-example-2.png) 
 
 **Project Components**
 * **Data Modeling & Quality Rules:** Schema definition and SQL scripts testing 6 dimensions of data quality.
