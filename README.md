@@ -346,7 +346,11 @@ Architected a comprehensive data quality framework from scratch to ensure the in
 * **"Silent Failure" Detection (Granular Alerting):** Configured alerts to trigger not just on system crashes, but specifically when a task succeeds technically but the underlying data fails internal business logic validations.
 * **SDLC Standardized Testing:** Developed comprehensive Unit Testing documentation and test cases aligning with standard Software Development Life Cycles.
 * **Cost-Efficient Architecture:** Bypassed premium MS Teams connectors by configuring custom HTTP URL triggers via Power Automate.
-  
+
+**Learnings & Skills**
+* **Data Governance & Quality:** Deepened my understanding of defining and enforcing strict data quality dimensions at an enterprise scale.
+* **Incident Response & Monitoring:** Gained practical experience in setting up event-driven alerting systems that reduce response times for silent data failures.
+
 <details>
 <summary><b>💻 Click to expand Code Snippet: Custom Business Logic Notifier (Python/Airflow)</b></summary>
 
@@ -445,6 +449,10 @@ A critical security infrastructure project aimed at retrofitting data privacy co
 * **Irreversible Hashing:** Added dedicated hash columns for emails and phone numbers to allow data analysis without exposing raw PII.
 * **Optimized Decryption:** Refactored legacy encryption logic by moving decryption processes into SQL CTEs, drastically reducing redundant calculations and query execution time.
 
+**Learnings & Skills**
+* **Applied Cryptography:** Learned how to practically implement AES-256 and SHA-256 standards directly within database engines.
+* **Production System Safety:** Mastered the critical skill of retrofitting complex security logic into live, running data pipelines without breaking downstream analytics.
+
 ---
 
 ### 5. Global Retail Visitor Analytics Dashboard
@@ -464,6 +472,10 @@ Developed a comprehensive Business Intelligence solution to track user engagemen
 * **Advanced Visualizations:** Implemented Sunburst charts for acquisition channels, Funnel charts for user journeys, and Word Clouds for demographics.
 * **Dynamic Querying:** Utilized Jinja templates within SQL to create highly flexible and interactive dashboard filters.
 
+**Learnings & Skills**
+* **Data Visualization & UX:** Learned how to translate raw metrics into intuitive, readable visual formats, especially highly visual ones like Sunburst and Funnel charts for non-technical business users.
+* **Cross-Functional Communication:** Enhanced my ability to gather requirements from business stakeholders and map them directly to BI dashboard features.
+  
 ---
 
 ### 6. Enterprise Tenant Management Pipeline Refactoring
@@ -475,6 +487,10 @@ Modernized legacy data pipelines for a retail tenant management system to align 
 * **Performance Enhancements:** Prevented system timeouts and reduced Airflow overload by limiting redundant SQL executions and implementing best practices.
 * **GitLab & Jenkins:** Used for version control, code review, and CI/CD deployment to all environments (DEV/QA/PROD).
 
+**Learnings & Skills**
+* **Advanced Orchestration:** Upgraded my Airflow skills from basic DAGs to advanced, dynamic, metadata-driven architectures using Task Mapping and Datasets.
+* **Technical Debt Resolution:** Gained valuable experience in identifying bottlenecks, refactoring legacy code, and optimizing system performance to prevent server timeouts.
+  
 <details>
 <summary><b>💻 Click to expand Code Snippet: Metadata-Driven Orchestration & Dynamic TaskGroups</b></summary>
 
@@ -572,3 +588,22 @@ Engineered the ingestion of massive historical application data. Utilized Python
 **Key Features**
 * **Data Transformation:** Handled nulls, extracted regex patterns, formatted timestamps, and fixed broken JSON strings via custom Python scripts.
 * **Seamless Ingestion:** Successfully mapped and imported the cleaned data into the DWS Production environment, enabling historical trend analysis for the Data Science team.
+
+**Learnings & Skills**
+* **Advanced Data Wrangling:** Developed strong proficiency in Python's `pandas` library for handling complex, unstructured, and messy historical datasets.
+* **Historical Data Migration:** Learned the nuances of batch-processing large volumes of legacy data into modern Production Data Warehouses.
+
+---
+
+## 📬 Let's Connect!
+
+Thank you for taking the time to review my portfolio. I am always eager to discuss data engineering architecture, pipeline optimization, and new opportunities to build scalable systems. 
+
+If you'd like to chat about my projects, share industry insights, or discuss potential roles, feel free to reach out!
+
+* **LinkedIn:** [Paepilai-Chaimongkolngam](https://linkedin.com/in/paepilai-chaimongkolngam-4a0127320)
+* **Email:** [paepilai.chai@gmail.com](mailto:paepilai.chai@gmail.com)
+
+<div align="center">
+  <i>"Building reliable pipelines so business teams can build reliable strategies."</i>
+</div>
